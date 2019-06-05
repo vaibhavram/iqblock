@@ -24,7 +24,7 @@ class Grid:
                 if self.has1x1hole(r, c) or (c < 7 and self.has1x2hole(r,c)) \
                 or (r < 7 and self.has2x1hole(r,c)):
                     return(True)
-        return(True)
+        return(False)
 
     def has1x1hole(self, r, c):
         if self.grid[r,c] == 0:

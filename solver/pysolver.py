@@ -17,7 +17,7 @@ def get_solutions(pieces, sol_path, log_path):
         ydim = new_piece.grid.shape[1]
         if x + xdim <= 8 and y + ydim <= 8:
             grid.add_piece(piece_to_add, x, y, orientation)
-            log_file.write(">"*k + " " + piece_to_add.color + " " + str((x, y)) + "\n")
+            log_file.write(">"*k + " " + piece_to_add.color + " " + str((x, y, orientation)) + "\n")
             if grid.good_grid() and not other_remaining_pieces:
                 sol_file.write("Solution " + str(sol_num) + ":\n")
                 sol_file.write(grid.grid_to_string() + "\n\n")
@@ -36,15 +36,18 @@ def get_solutions(pieces, sol_path, log_path):
     
     for r in range(8):
         for c in range(8):
-            for o in range(pieces[0].max_orient):
-            	message = "Piece 1 in row " + str(r) + ", column " + str(c) + ", orientation " + str(o)
-                log_file.write(message + "\n")
-                print(message)
-                start = timer()
-                recurse(Grid(), pieces[0], r, c, o, pieces[1:], 1)
-                end = timer()
-                print(">>> Process completed in " + str((end - start)/3600) + " hours")
-                
+        	# NOTE: don't have to do multiple orientations of first piece since
+        	# we want unique solutions and all solutions with 
+        	# the first piece in any orientation other than 0 will simply be rotations
+        	# or reflections of a solution with the first piece in orientation 0
+        	message = "Piece 1 in row " + str(r) + ", column " + str(c)
+        	log_file.write(message + "\n")
+        	print(message)
+        	start = timer()
+        	recurse(Grid(), pieces[0], r, c, 0, pieces[1:], 1) # see note above
+        	end = timer()
+        	print(">>> Process completed in " + str((end - start)/3600) + " hours")
+
     sol_file.close()
     log_file.close()
     
