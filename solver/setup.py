@@ -16,7 +16,93 @@ class Grid:
         self.colorgrid[x:(x + xdim),y:(y + ydim)] += new_piece.colorgrid
             
     def good_grid(self):
-        return(not np.any(self.grid > 1))
+        return(not np.any(self.grid > 1) and not self.has_hole())
+
+    def has_hole(self):
+        for r in range(8):
+            for c in range(8):
+                if self.has1x1hole(r, c) or (c < 7 and self.has1x2hole(r,c)) \
+                or (r < 7 and self.has2x1hole(r,c)):
+                    return(True)
+        return(True)
+
+    def has1x1hole(self, r, c):
+        if self.grid[r,c] == 0:
+            if r == 0 and c == 0:
+                if self.grid[r,c+1] > 0 and self.grid[r+1,c] > 0:
+                    return(True)
+            elif r == 0 and c == 7:
+                if self.grid[r,c-1] > 0 and self.grid[r+1,c] > 0:
+                    return(True)
+            elif r == 7 and c == 0:
+                if self.grid[r,c+1] > 0 and self.grid[r-1,c] > 0:
+                    return(True)
+            elif r == 7 and c == 7:
+                if self.grid[r,c-1] > 0 and self.grid[r-1,c] > 0:
+                    return(True)
+            elif r == 0:
+                if self.grid[r,c-1] >0 and self.grid[r,c+1] > 0 and self.grid[r+1,c] > 0:
+                    return(True)
+            elif r == 7:
+                if self.grid[r,c-1] > 0 and self.grid[r,c+1] > 0 and self.grid[r-1,c] > 0:
+                        return(True)
+            elif c == 0:
+                if self.grid[r-1,c] > 0 and self.grid[r+1,c] > 0 and self.grid[r,c+1] > 0:
+                    return(True)
+            elif c == 7:
+                if self.grid[r-1,c] > 0 and self.grid[r+1,c] > 0 and self.grid[r,c-1] > 0:
+                    return(True)
+            else:
+                if self.grid[r+1,c] > 0 and self.grid[r-1,c] > 0 and self.grid[r,c+1] > 0 \
+                and self.grid[r,c-1] > 0:
+                    return(True)
+        return(False)
+
+    def has1x2hole(self, r, c):
+        assert (c < 7), "Column out of bounds"
+        if self.grid[r,c] == 0 and self.grid[r,c+1] == 0:
+            if r == 0 and c == 0:
+                if self.grid[r,c+2] > 0 and self.grid[r+1,c] > 0 and self.grid[r+1,c+1] > 0:
+                    return(True)
+            elif r == 0 and c == 6:
+                if self.grid[r,c-1] > 0 and self.grid[r+1,c] > 0 and self.grid[r+1,c+1] > 0:
+                    return(True)
+            elif r == 7 and c == 0:
+                if self.grid[r,c+2] > 0 and self.grid[r-1,c] > 0 and self.grid[r-1,c+1] > 0:
+                    return(True)
+            elif r == 7 and c == 6:
+                if self.grid[r,c-1] > 0 and self.grid[r-1,c] > 0 and self.grid[r-1,c+1] > 0:
+                    return(True)
+            elif r == 0:
+                if self.grid[r,c-1] >0 and self.grid[r,c+2] > 0 \
+                and self.grid[r+1,c] > 0 and self.grid[r+1,c+1] > 0:
+                    return(True)
+            elif r == 7:
+                if self.grid[r,c-1] > 0 and self.grid[r,c+2] > 0 \
+                and self.grid[r-1,c] > 0 and self.grid[r-1,c+1] > 0:
+                        return(True)
+            elif c == 0:
+                if self.grid[r-1,c] > 0 and self.grid[r+1,c] > 0 \
+                and self.grid[r-1,c+1] > 0 and self.grid[r+1,c+1] > 0 \
+                and self.grid[r,c+2] > 0:
+                    return(True)
+            elif c == 6:
+                if self.grid[r-1,c] > 0 and self.grid[r+1,c] > 0 \
+                and self.grid[r-1,c+1] > 0 and self.grid[r+1,c+1] > 0 \
+                and self.grid[r,c-1] > 0:
+                    return(True)
+            else:
+                if self.grid[r+1,c] > 0 and self.grid[r-1,c] > 0 \
+                and self.grid[r+1,c+1] > 0 and self.grid[r-1,c+1] \
+                and self.grid[r,c+2] > 0 and self.grid[r,c-1] > 0:
+                    return(True)
+        return(False)
+
+    def has2x1hole(self, r, c):
+        self.grid = np.transpose(self.grid)
+        has2x1 = self.has1x2hole(c, r)
+        self.grid = np.transpose(self.grid)
+        return(has2x1)
     
     def empty_space(self, x, y):
         return(self.grid[x,y] == 0)
@@ -75,3 +161,11 @@ class Piece:
             gr = np.flip(gr, axis = 1)
         # add piece to grid in correct spot
         return Piece(gr.tolist(), self.color)
+
+    def print(self, orientation = 0):
+        reoriented = self.reorient(orientation)
+        s = [[str(e) for e in row] for row in reoriented.grid]
+        lens = [max(map(len, col)) for col in zip(*s)]
+        fmt = ' '.join('{{:{}}}'.format(x) for x in lens)
+        table = [fmt.format(*row) for row in s]
+        print('\n'.join(table))
