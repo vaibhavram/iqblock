@@ -1,5 +1,6 @@
 import numpy as np
 from setup import Grid, Piece
+from timeit import default_timer as timer
 
 def get_solutions(pieces, sol_path, log_path):
     sol_file = open(sol_path, "w")
@@ -36,8 +37,13 @@ def get_solutions(pieces, sol_path, log_path):
     for r in range(8):
         for c in range(8):
             for o in range(pieces[0].max_orient):
-                log_file.write("Piece 1 in row " + str(r) + ", column " + str(c) + ", orientation " + str(o) + "\n")
+            	message = "Piece 1 in row " + str(r) + ", column " + str(c) + ", orientation " + str(o)
+                log_file.write(message + "\n")
+                print(message)
+                start = timer()
                 recurse(Grid(), pieces[0], r, c, o, pieces[1:], 1)
+                end = timer()
+                print(">>> Process completed in " + str((end - start)/3600) + " hours")
                 
     sol_file.close()
     log_file.close()
