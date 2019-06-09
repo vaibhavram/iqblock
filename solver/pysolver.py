@@ -82,23 +82,12 @@ AQUA = Piece([[1,1],[1,1],[1,0]], "aq")
 
 PIECES = [BLUE, BROWN, PURPLE, WHITE, DARKGREEN, YELLOW, ORANGE, PINK, AQUA, LIGHTGREEN]
 
-## 00x, 01x, 02x, 10x, 11x, 12x, 13x, 20x, 21, 22, 23
+## 00, 01, 02, 10, 11, 12, 13, 20, 21, 22, 23
 
-blue_in_21 = Grid()
-blue_in_21.add_piece(BLUE, 2, 1, 0)
-
-solutions21 = get_solutions(PIECES[1:], "solutions_blue_in_2_1.txt", "log_blue_in_2_1.txt", blue_in_21)
-
-blue_in_22 = Grid()
-blue_in_22.add_piece(BLUE, 2, 2, 0)
-
-solutions22 = get_solutions(PIECES[1:], "solutions_blue_in_2_2.txt", "log_blue_in_2_2.txt", blue_in_22)
-
-blue_in_23 = Grid()
-blue_in_23.add_piece(BLUE, 2, 3, 0)
-
-solutions23 = get_solutions(PIECES[1:], "solutions_blue_in_2_3.txt", "log_blue_in_2_3.txt", blue_in_23)
-
-
-# solutions = get_solutions(PIECES, "solutions.txt", "log.txt")
-
+for r in range(3):
+    for c in range(4):
+        grid = Grid()
+        grid.add_piece(BLUE, r, c, 0)
+        extension = str(r) + "_" + str(c) + ".txt"
+        solutions = get_solutions(PIECES[1:], "solutions_blue_in_" +  extension, \
+            "log_blue_in_" + extension, grid)
