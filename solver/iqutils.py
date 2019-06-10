@@ -5,6 +5,7 @@ class Grid:
     def __init__(self, grid = [[0]*8]*8, colorgrid = [["--"]*8]*8):
         self.grid = np.array(grid, dtype = np.int)
         self.colorgrid = np.array(colorgrid, dtype = object)
+        self.pieces = set()
         
     def add_piece(self, piece, x, y, orientation_index):
         assert (orientation_index < piece.max_orient), "Orientation exceeds number of orientations"
@@ -14,9 +15,22 @@ class Grid:
         assert (x + xdim <= 8 and y + ydim <= 8), "Piece is out of bounds"
         self.grid[x:(x + xdim),y:(y + ydim)] += new_piece.grid
         self.colorgrid[x:(x + xdim),y:(y + ydim)] += new_piece.colorgrid
+        self.pieces.add((piece.color, x, y, orientation_index))
+
+    def remove_piece(self, piece, x, y, orientation_index):
+        assert ((piece.color, x, y, orientation_index) in self.pieces), "Piece is not in grid"
+        new_piece = piece.reorient(piece.orientations[orientation_index])
+        xdim = new_piece.grid.shape[0]
+        ydim = new_piece.grid.shape[1]
+        self.grid[x:(x + xdim),y:(y + ydim)] -= new_piece.grid
+        for r in range(x, x + xdim):
+            for c in range(y, y + ydim):
+                if self.colorgrid[r,c].endswith(piece.color):
+                    self.colorgrid[r,c] = self.colorgrid[r,c][:-2]
+        self.pieces.remove((piece.color, x, y, orientation_index))
             
     def good_grid(self):
-        return(not np.any(self.grid > 1) and not self.has_hole())
+        return(not np.any(self.grid > 1))
 
     def has_hole(self):
         for r in range(8):
@@ -114,12 +128,43 @@ class Grid:
         table = [fmt.format(*row) for row in s]
         print('\n'.join(table))
             
+    # def cprint(self):
+    #     s = [[str(e)[(len(str(e)) - 2):] for e in row] for row in self.colorgrid]
+    #     lens = [max(map(len, col)) for col in zip(*s)]
+    #     fmt = ' '.join('{{:{}}}'.format(x) for x in lens)
+    #     table = [fmt.format(*row) for row in s]
+    #     print('\n'.join(table))
+
     def cprint(self):
-        s = [[str(e)[(len(str(e)) - 2):] for e in row] for row in self.colorgrid]
-        lens = [max(map(len, col)) for col in zip(*s)]
-        fmt = ' '.join('{{:{}}}'.format(x) for x in lens)
-        table = [fmt.format(*row) for row in s]
-        print('\n'.join(table))
+        output = ""
+        for r in range(8):
+            for c in range(8):
+                item = self.colorgrid[r,c][-2:]
+                if item == "bl":
+                    output += "\x1b[0;34m"
+                elif item == "pu":
+                    output += "\x1b[0;35m"
+                elif item == "aq":
+                    output += "\x1b[0;36m"
+                elif item == "br":
+                    output += "\x1b[0;31m"
+                elif item == "lg":  
+                    output += "\x1b[1;32m"
+                elif item == "dg":  
+                    output += "\x1b[0;32m"
+                elif item == "pi":  
+                    output += "\x1b[1;35m"
+                elif item == "or":
+                    output += "\x1b[1;31m"
+                elif item == "wh":
+                    output += "\x1b[0;37m"
+                elif item == "ye":
+                    output += "\x1b[1;33m"
+                output += item + " "
+                if item != "--":
+                    output += "\x1b[0m"
+            output += "\n"
+        print(output)
         
     def grid_to_string(self):
         s = [[str(e)[(len(str(e)) - 2):] for e in row] for row in self.colorgrid]
@@ -163,7 +208,8 @@ class Piece:
         return Piece(gr.tolist(), self.color)
 
     def print(self, orientation = 0):
-        reoriented = self.reorient(orientation)
+        assert (orientation < self.max_orient), "Not a valid orientation for this piece"
+        reoriented = self.reorient(self.orientations[orientation])
         s = [[str(e) for e in row] for row in reoriented.grid]
         lens = [max(map(len, col)) for col in zip(*s)]
         fmt = ' '.join('{{:{}}}'.format(x) for x in lens)

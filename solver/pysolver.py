@@ -26,7 +26,7 @@ def get_solutions(pieces, sol_path, log_path, starting_grid = Grid()):
             #     grid.cprint()
             #     print()
             log_file.write(">"*k + " " + piece_to_add.color + " " + str((x, y, orientation)) + "\n")
-            if grid.good_grid() and not other_remaining_pieces:
+            if grid.good_grid() and not grid.has_hole() and not other_remaining_pieces:
                 sol_num = len(SOLUTIONS)
                 sol_file.write("Solution " + str(sol_num) + ":\n")
                 sol_file.write(grid.grid_to_string() + "\n\n")
@@ -34,7 +34,7 @@ def get_solutions(pieces, sol_path, log_path, starting_grid = Grid()):
                 print("Solution " + str(sol_num))
                 # grid.cprint()
                 SOLUTIONS.append(grid)
-            elif grid.good_grid():
+            elif grid.good_grid() and not grid.has_hole():
                 next_piece = other_remaining_pieces[0]
                 for r in range(8):
                     for c in range(8):
