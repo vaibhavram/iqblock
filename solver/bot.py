@@ -65,7 +65,9 @@ class Bot():
             print("Not yet loaded")
 
     def show(self, num = 1):
-        if self.loaded:
+        if num > 1000:
+            print("Number too high")
+        elif self.loaded:
             if self.matched:
                 solset = self.matches
             else:
@@ -119,7 +121,7 @@ class Bot():
                         self.grid.remove_piece(piece, r, c, o)
                         print("Invalid placement")
                 except AssertionError:
-                    print("Invalid orientation")
+                    print("Invalid addition")
 
     def remove(self, color, r, c, o):
         color = self.process(color)
@@ -156,10 +158,15 @@ class Bot():
 
     def match(self):
         if self.matched:
-            print("Already matched. Unmatch and try again")
+            answer = input("Matches exist. Do you want to unmatch and re-match? [y]/n: ")
+            if answer == "" or answer == "y":
+                self.unmatch()
+                self.match()
+            else:
+                print("Did not unmatch")
         else:
             if not self.added:
-                print("No pieces added yet")
+                print("No pieces added yet, cannot match")
             else:
                 if not self.loaded:
                     self.load()
@@ -194,7 +201,7 @@ class Bot():
 def main():
     bot = Bot()
     while True:
-        cmd = input("[iq]> ").split(" ")
+        cmd = input("[iq]> ").strip().split(" ")
         method = cmd[0].upper()
         if method == "HELP":
             print("""List of Commands:
@@ -208,7 +215,9 @@ def main():
     MATCH - find and save all solutions that match current grid state
     UNMATCH - clear all matches, preserving current grid state
     RESET - clear all matches and grid state
-    EXIT - close program""")
+    EXIT - close program
+
+    Pieces: BLue PUrple YEllow ORange PInk AQua LightGreen BRown DarkGreen WHite""")
         elif method == "LOAD":
             bot.load()
         elif method == "RANDOM":
@@ -230,23 +239,29 @@ def main():
                     orientation = int(cmd[2])
                     bot.piece(color, orientation)
         elif method == "ADD":
-            if len(cmd) < 4:
+            if len(cmd) < 5:
                 print("Not enough arguments. See HELP")
             else:
                 color = cmd[1]
-                row = int(cmd[2])
-                col = int(cmd[3])
-                ori = int(cmd[4])
-                bot.add(color, row, col, ori)
+                try:
+                    row = int(cmd[2])
+                    col = int(cmd[3])
+                    ori = int(cmd[4])
+                    bot.add(color, row, col, ori)
+                except ValueError:
+                    print("Incorrect argument type. See HELP")
         elif method == "REMOVE":
             if len(cmd) < 4:
                 print("Not enough arguments. See HELP")
             else:
                 color = cmd[1]
-                row = int(cmd[2])
-                col = int(cmd[3])
-                ori = int(cmd[4])
-                bot.remove(color, row, col, ori)
+                try:
+                    row = int(cmd[2])
+                    col = int(cmd[3])
+                    ori = int(cmd[4])
+                    bot.remove(color, row, col, ori)
+                except ValueError:
+                    print("Incorrect argument type. See HELP")
         elif method == "GRID":
             bot.gridprint()
         elif method == "MATCH":
