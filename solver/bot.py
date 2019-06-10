@@ -6,6 +6,7 @@ class Bot():
         self.loaded = False
         self.matched = False
         self.matches = []
+        self.matchindices = []
         self.sols = []
         self.grid = Grid()
         self.pieces = {"bl": Piece([[1,1,1,0,0],[0,0,1,0,0],[0,0,1,1,1]], "bl"),
@@ -58,12 +59,12 @@ class Bot():
             if not self.matched:
                 print("Solution " + str(index) + ":")
             else:
-                print("Match " + str(index) + ":")
+                print("Solution " + str(self.matchindices[self.show_ind + i]) + ":")
             result.cprint()
         else:
             print("Not yet loaded")
 
-    def show(self, num = 10):
+    def show(self, num = 1):
         if self.loaded:
             if self.matched:
                 solset = self.matches
@@ -74,9 +75,11 @@ class Bot():
                 if not self.matched:
                     print("Solution " + str(self.show_ind + i) + ":")
                 else:
-                    print("Match " + str(self.show_ind + i) + ":")
+                    print("Solution " + str(self.matchindices[self.show_ind + i]) + ":")
                 result[i].cprint()
             self.show_ind += num
+            if self.show_ind >= self.size():
+                self.show_ind = 0
         else:
             print("Not yet loaded")
 
@@ -153,43 +156,60 @@ class Bot():
 
     def match(self):
         if self.matched:
-            print("Already matched")
+            print("Already matched. Unmatch and try again")
         else:
             if not self.added:
                 print("No pieces added yet")
-            elif self.loaded:
-                for sol_grid in self.sols:
+            else:
+                if not self.loaded:
+                    self.load()
+                for s in range(len(self.sols)):
+                    sol_grid = self.sols[s]
                     result = self.get_grid_match(sol_grid, self.grid)
                     if result:
+                        # result.cprint()
                         self.matches.append(result)
+                        self.matchindices.append(s)
                 print(str(len(self.matches)) + " matches found")
                 self.matched = True
                 self.show_ind = 0
-            else:
-                print("Not yet loaded")
 
     def reset(self):
         self.show_ind = 0
         self.loaded = True
         self.matched = False
         self.matches = []
+        self.matchindices = []
         self.grid = Grid()
         self.added = []
         print("Full reset complete")
 
-    def revert(self):
+    def unmatch(self):
         self.matched = False
         self.matches = []
+        self.matchindices = []
         self.show_ind = 0
         print("Matches reverted")
-
 
 def main():
     bot = Bot()
     while True:
         cmd = input("[iq]> ").split(" ")
         method = cmd[0].upper()
-        if method == "LOAD":
+        if method == "HELP":
+            print("""List of Commands:
+    LOAD - load all solutions
+    RANDOM - show random solution or match
+    SHOW [int NUM] - show next NUM solutions (default 1)
+    PIECE str COL [int O] - show piece of color COL in orientation O (default 0)
+    GRID - show current state of grid
+    ADD str COL int X int Y int O - add piece of color COL to grid at position X, Y in orientation O
+    REMOVE str COL int X int Y int O - remove piece of color COL to grid at position X, Y in orientation O
+    MATCH - find and save all solutions that match current grid state
+    UNMATCH - clear all matches, preserving current grid state
+    RESET - clear all matches and grid state
+    EXIT - close program""")
+        elif method == "LOAD":
             bot.load()
         elif method == "RANDOM":
             bot.random()
@@ -200,29 +220,41 @@ def main():
             else:
                 bot.show()
         elif method == "PIECE":
-            color = cmd[1]
-            orientation = int(cmd[2])
-            bot.piece(color, orientation)
+            if len(cmd) < 2:
+                print("Please enter a color")
+            else:
+                color = cmd[1]
+                if len(cmd) < 3:
+                    bot.piece(color, 0)
+                else:
+                    orientation = int(cmd[2])
+                    bot.piece(color, orientation)
         elif method == "ADD":
-            color = cmd[1]
-            row = int(cmd[2])
-            col = int(cmd[3])
-            ori = int(cmd[4])
-            bot.add(color, row, col, ori)
+            if len(cmd) < 4:
+                print("Not enough arguments. See HELP")
+            else:
+                color = cmd[1]
+                row = int(cmd[2])
+                col = int(cmd[3])
+                ori = int(cmd[4])
+                bot.add(color, row, col, ori)
         elif method == "REMOVE":
-            color = cmd[1]
-            row = int(cmd[2])
-            col = int(cmd[3])
-            ori = int(cmd[4])
-            bot.remove(color, row, col, ori)
+            if len(cmd) < 4:
+                print("Not enough arguments. See HELP")
+            else:
+                color = cmd[1]
+                row = int(cmd[2])
+                col = int(cmd[3])
+                ori = int(cmd[4])
+                bot.remove(color, row, col, ori)
         elif method == "GRID":
             bot.gridprint()
         elif method == "MATCH":
             bot.match()
         elif method == "RESET":
             bot.reset()
-        elif method == "REVERT":
-            bot.revert()
+        elif method == "UNMATCH":
+            bot.unmatch()
         elif method == "EXIT":
             break
         else:
