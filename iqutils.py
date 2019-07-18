@@ -207,7 +207,7 @@ class Piece:
         # add piece to grid in correct spot
         return Piece(gr.tolist(), self.color)
 
-    def print(self, orientation = 0):
+    def pprint(self, orientation = 0):
         assert (orientation < self.max_orient), "Not a valid orientation for this piece"
         reoriented = self.reorient(self.orientations[orientation])
         s = [[str(e) for e in row] for row in reoriented.grid]

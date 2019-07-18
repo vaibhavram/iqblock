@@ -45,24 +45,25 @@ class Bot():
             return(len(self.sols))
 
     def random(self):
-        if self.loaded:
+        if not self.loaded:
+            print("Not yet loaded")
+        else:
             index = np.random.randint(0, self.size())
-            orientation = np.random.randint(0, 8)
             if self.matched:
                 solset = self.matches
             else:
                 solset = self.sols
             result = solset[index]
-            result.colorgrid = np.rot90(result.colorgrid, k = orientation % 4)
-            if orientation > 3:
-                result.colorgrid = np.flip(result.colorgrid, axis = 1)
-            if not self.matched:
-                print("Solution " + str(index) + ":")
+            if self.matched:
+                print("Solution " + str(self.matchindices[index]) + ":")
+                result.cprint()
             else:
-                print("Solution " + str(self.matchindices[self.show_ind + i]) + ":")
-            result.cprint()
-        else:
-            print("Not yet loaded")
+                print("Solution " + str(index) + ":")
+                orientation = np.random.randint(0, 8)
+                result.colorgrid = np.rot90(result.colorgrid, k = orientation % 4)
+                if orientation > 3:
+                    result.colorgrid = np.flip(result.colorgrid, axis = 1)
+                result.cprint()
 
     def show(self, num = 1):
         if num > 1000:
@@ -101,7 +102,7 @@ class Bot():
         if color:
             piece = self.pieces[color]
             try:
-                piece.print(orientation)
+                piece.pprint(orientation)
             except AssertionError:
                 print("Invalid orientation")
 

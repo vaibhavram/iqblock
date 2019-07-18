@@ -20,3 +20,5 @@ for file in sol_files:
     sol_file.close()
 
 full_file.close()
+
+print(str(sol_num) + " solutions in total")
