@@ -112,6 +112,7 @@ or pu pu pu -- -- -- --
 -- -- -- -- -- -- -- -- 
 ```
 8. `match` - look for matches. This will show how many matches there are for the current grid configuration.
+
 `41 matches found`
 9. `show 2` - show 2 of the matches.
 ```
