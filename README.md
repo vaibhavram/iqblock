@@ -33,3 +33,12 @@ I searched online for answers to my questions and found a nicely-detailed articl
 I searched some more and though I could find some YouTube videos (<https://www.youtube.com/watch?v=6jt93h7nRe4>) showing various solutions, I could find no other research into the number of solutions to this puzzle.
 
 ## Solutions
+
+To replicate how I created the solutions, you would need to follow the following steps:
+
+1. Create a folder called "solutions" and a folder called "logs" within iqblock/
+2. Install the numpy package
+3. Run pysolver.py. This script finds and writes solutions into multiple solutions files in the iqlock/solutions/ folder. The solutions are divided into multiple files to make it easier to start from where you left off in case the program stops midway
+4. Run consolidate.py. This script consolidates all the solutions into one file
+
+If you would rather not run these steps, no worries! The solutions.txt file contains the fully consolidated solutions so no steps are required if you want to view all of them.
