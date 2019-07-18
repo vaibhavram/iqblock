@@ -1,6 +1,4 @@
-*.DS_Store
-solver/__pycache__/*
-solver/logs/*
-solver/solutions/*
-solver/.DS_Store
-
+.DS_Store
+__pycache__/*
+logs/*
+solutions/*
