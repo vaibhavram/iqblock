@@ -1,3 +1,4 @@
 *.DS_Store
 solver/__pycache__/*
-*.txt
+solver/logs/*
+solver/.DS_Store
