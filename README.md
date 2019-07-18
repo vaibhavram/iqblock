@@ -22,9 +22,9 @@ x x x x     x           x             x            x x
 
 These pieces are to fit neatly into an 8x8 grid. Two example solutions are shown below:
 
-<img src="https://raw.githubusercontent.com/vaibhavram/iqblock/master/solver/hand_solutions/IMG_0387.jpg" width="200" height="200">
+<img src="https://raw.githubusercontent.com/vaibhavram/iqblock/master/hand_solutions/IMG_0387.jpg" width="200" height="200">
 
-<img src="https://raw.githubusercontent.com/vaibhavram/iqblock/master/solver/hand_solutions/IMG_0388.jpg" width="200" height="200">
+<img src="https://raw.githubusercontent.com/vaibhavram/iqblock/master/hand_solutions/IMG_0388.jpg" width="200" height="200">
 
 ## Literature
 
@@ -41,4 +41,8 @@ To replicate how I created the solutions, you would need to follow the following
 3. Run pysolver.py. This script finds and writes solutions into multiple solutions files in the iqlock/solutions/ folder. The solutions are divided into multiple files to make it easier to start from where you left off in case the program stops midway
 4. Run consolidate.py. This script consolidates all the solutions into one file
 
-If you would rather not run these steps, no worries! The solutions.txt file contains the fully consolidated solutions so no steps are required if you want to view all of them.
+**If you would rather not run these steps, no worries! The solutions.txt file contains the fully consolidated solutions so no steps are required if you want to view all of them.**
+
+## Interactive Bot
+
+I have also built an interactive bot so that you can play around with and find solutions under specific constraints. To run the bot, simply run bot.py in your Terminal.
