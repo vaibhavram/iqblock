@@ -62,7 +62,7 @@ class Bot():
                 orientation = np.random.randint(0, 8)
                 result.colorgrid = np.rot90(result.colorgrid, k = orientation % 4)
                 if orientation > 3:
-                    result.colorgrid = np.flip(result.colorgrid, axis = 1)
+                    result.colorgrid = np.fliplr(result.colorgrid)
                 result.cprint()
 
     def show(self, num = 1):
@@ -145,7 +145,7 @@ class Bot():
         for o in range(8):
             testgrid = np.rot90(big.colorgrid, k = o % 4)
             if o > 3:
-                testgrid = np.flip(testgrid, axis = 1)
+                testgrid = np.fliplr(testgrid)
             num_true = 0
             for r in range(8):
                 for c in range(8):

@@ -182,8 +182,8 @@ class Piece:
         self.colorgrid[self.grid == 1] = self.color
         self.colorgrid[self.grid == 0] = ""
         self.__rotsym = np.array_equal(self.grid, np.rot90(self.grid, k = 2))
-        self.__flipsym = np.array_equal(self.grid, np.flip(np.rot90(self.grid), axis = 1)) or \
-        np.array_equal(self.grid, np.flip(self.grid, axis = 1))
+        self.__flipsym = np.array_equal(self.grid, np.fliplr(np.rot90(self.grid))) or \
+        np.array_equal(self.grid, np.fliplr(self.grid))
         if self.__rotsym and self.__flipsym:
             self.max_orient = 2
             self.orientations = [0,1]
@@ -203,7 +203,7 @@ class Piece:
         gr = np.rot90(self.grid, k = orientation % 4)
         # flip piece if needed
         if orientation > 3:
-            gr = np.flip(gr, axis = 1)
+            gr = np.fliplr(gr)
         # add piece to grid in correct spot
         return Piece(gr.tolist(), self.color)
 
