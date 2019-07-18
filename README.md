@@ -28,6 +28,8 @@ These pieces are to fit neatly into an 8x8 grid. Two example solutions are shown
 
 ## Literature
 
-I searched online for answers to my questions and found two results:
+I searched online for answers to my questions and found a nicely-detailed article by [Hartmut Blessing](http://www.prismenfernglas.de/aboutme.html) located here: <http://www.prismenfernglas.de/iqblock_e.htm>. Mr. Blessing asserts that there are 12,724 unique solutions (rotations and reflections notwithstanding). However, I could not find any code or solution list to verify this quantity.
 
-1) A nicely-detailed article by ![Hartmut Blessing](http://www.prismenfernglas.de/aboutme.html)
+I searched some more and though I could find some YouTube videos showing various solutions, I could find no other research into the number of solutions to this puzzle.
+
+## Solutions
