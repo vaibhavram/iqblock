@@ -20,6 +20,8 @@ x x x x     x           x             x            x x
             x x x x     x x x         x x          x x
 ```
 
-These pieces are to fit neatly into an 8x8 grid. One example solution is shown below:
+These pieces are to fit neatly into an 8x8 grid. Two example solutions are shown below:
 
-<img src="https://raw.githubusercontent.com/vaibhavram/iqblock/master/solver/hand_solutions/IMG_0387.jpg" width="100" height="100">
+<img src="https://raw.githubusercontent.com/vaibhavram/iqblock/master/solver/hand_solutions/IMG_0387.jpg" width="200" height="200">
+
+<img src="https://raw.githubusercontent.com/vaibhavram/iqblock/master/solver/hand_solutions/IMG_0388.jpg" width="200" height="200">
