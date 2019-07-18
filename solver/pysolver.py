@@ -89,5 +89,5 @@ for r in range(3):
         grid = Grid()
         grid.add_piece(BLUE, r, c, 0)
         extension = str(r) + "_" + str(c) + ".txt"
-        solutions = get_solutions(PIECES[1:], "solutions_blue_in_" +  extension, \
-            "log_blue_in_" + extension, grid)
+        solutions = get_solutions(PIECES[1:], "solutions/solutions_blue_in_" +  extension, \
+            "logs/log_blue_in_" + extension, grid)
