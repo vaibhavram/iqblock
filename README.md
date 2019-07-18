@@ -25,3 +25,9 @@ These pieces are to fit neatly into an 8x8 grid. Two example solutions are shown
 <img src="https://raw.githubusercontent.com/vaibhavram/iqblock/master/solver/hand_solutions/IMG_0387.jpg" width="200" height="200">
 
 <img src="https://raw.githubusercontent.com/vaibhavram/iqblock/master/solver/hand_solutions/IMG_0388.jpg" width="200" height="200">
+
+## Literature
+
+I searched online for answers to my questions and found two results:
+
+1) A nicely-detailed article by ![Hartmut Blessing](http://www.prismenfernglas.de/aboutme.html)
