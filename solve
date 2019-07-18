@@ -1,4 +1,4 @@
 #!/bin/bash
-
+echo Solving IQ Block
 python solver/pysolver.py
 python solver/consolidate.py
