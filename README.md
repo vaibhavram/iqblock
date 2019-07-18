@@ -48,7 +48,6 @@ To replicate how I created the solutions, you would need to follow the following
 I have also built an interactive bot so that you can play around with and find solutions under specific constraints. To run the bot, simply run bot.py in your Terminal. To view all of the commands that the bot accepts, enter 'help'. 
 
 ### Example 1
-5. 
 
 Here's an example of how one may use the bot to add 2 pieces to the grid and see how many solutions have those pieces in that configuration. Let's say the user wants to see how many solutions have the orange piece in the corner with the purple piece placed within it as so:
 
